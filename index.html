@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turmas do 5º Ano - Convivências</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="cabecalho">
+        <h1>E.M.E.F.SEBASTIÃO DA SILVA ORTZ</h1>
+        <p>Momentos inesquecíveis das nossas convivências e aprendizados!</p>
+    </header>
+
+    <main class="container">
+        <section class="galeria-secao">
+            <h2>Nossas Memórias</h2>
+            <div class="galeria">
+                </div>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <p>&copy; 2025 - Escola Exemplo. Todos os direitos reservados.</p>
+    </footer>
+
+    <div id="modal-imagem" class="modal">
+        <span class="fechar">&times;</span>
+        <button class="modal-btn prev">&lsaquo;</button>
+        <img class="modal-conteudo" id="img-expandida">
+        <button class="modal-btn next">&rsaquo;</button>
+    </div>
+
+    <script>
+        const galeria = document.querySelector('.galeria');
+        const totalImagens = 60; // Definindo o número total de imagens
+
+        // Loop para adicionar 60 imagens à galeria
+        for (let i = 1; i <= totalImagens; i++) {
+            const itemGaleria = document.createElement('div');
+            itemGaleria.classList.add('item-galeria');
+            
+            const img = document.createElement('img');
+            img.src = `images/foto${i}.jpeg`; // Altere para a convenção de nome das suas imagens
+            img.alt = `Momento das Turmas do 5º Ano - Foto ${i}`;
+            img.dataset.index = i - 1; // Índices base 0 para o array
+            
+            itemGaleria.appendChild(img);
+            galeria.appendChild(itemGaleria);
+        }
+
+        // --- Lógica do Modal ---
+        const modal = document.getElementById('modal-imagem');
+        const imgExpandida = document.getElementById('img-expandida');
+        const fecharBtn = document.querySelector('.fechar');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+        let currentIndex = 0;
+        const imagens = document.querySelectorAll('.galeria img'); // Pega todas as imagens da galeria
+
+        // Abrir o modal ao clicar em uma imagem
+        galeria.addEventListener('click', function(e) {
+            if (e.target.tagName === 'IMG') {
+                currentIndex = parseInt(e.target.dataset.index);
+                imgExpandida.src = e.target.src;
+                modal.style.display = 'flex'; // Usamos flex para centralizar
+            }
+        });
+
+        // Fechar o modal
+        fecharBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Fechar o modal clicando fora da imagem
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Navegar para a imagem anterior
+        prevBtn.addEventListener('click', function() {
+            currentIndex = (currentIndex - 1 + imagens.length) % imagens.length;
+            imgExpandida.src = imagens[currentIndex].src;
+        });
+
+        // Navegar para a próxima imagem
+        nextBtn.addEventListener('click', function() {
+            currentIndex = (currentIndex + 1) % imagens.length;
+            imgExpandida.src = imagens[currentIndex].src;
+        });
+
+        // Navegação pelo teclado (opcional, mas legal!)
+        document.addEventListener('keydown', function(e) {
+            if (modal.style.display === 'flex') {
+                if (e.key === 'ArrowLeft') {
+                    prevBtn.click();
+                } else if (e.key === 'ArrowRight') {
+                    nextBtn.click();
+                } else if (e.key === 'Escape') {
+                    fecharBtn.click();
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
